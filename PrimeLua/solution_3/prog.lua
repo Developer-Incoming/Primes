@@ -301,9 +301,11 @@ function Module:B()
     --  Create a benchmark which takes advantage of Lua arrays.
     do
         local buf = {}
+
         for i = 0, 1000000 / 2 do
             buf[i] = 0
         end
+
         Sieve.Execute { Name = "mooshua_luajit_array", Buffer = buf }
     end
 
@@ -433,7 +435,6 @@ if not ARGS[1] then
         d[ump] - Quickly dump a list of primes to verify correctness (can be checked with test.lua)
     ]]
 else
-
     local mode = string.upper(string.sub(ARGS[1] or " ",1,1))
 
     if Module[mode] then

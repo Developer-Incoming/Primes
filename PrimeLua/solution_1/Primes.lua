@@ -21,36 +21,39 @@ local PrimeSieve = {}
 PrimeSieve.__index = PrimeSieve
 
 function PrimeSieve:new(size)
-  local bitArray = {}
+	local bitArray = {}
 
-  for n = 1, floor((size + 1) / 2) do
+	for n = 1, floor((size + 1) / 2) do
 		bitArray[n] = true
 	end
-
-  return setmetatable({sieveSize = size, bitArray = bitArray}, self)
+	
+	return setmetatable({sieveSize = size, bitArray = bitArray}, self)
 end
 
 function PrimeSieve:countPrimes()
-  local count, bitArray = 0, self.bitArray
+	local count, bitArray = 0, self.bitArray
+
 	for i = 1, #bitArray do
 		if bitArray[i] then
 			count = count + 1
 		end
 	end
+
 	return count
 end
 
 function PrimeSieve:validateResults()
-  local k = 'k' .. self.sieveSize
+	local k = 'k' .. self.sieveSize
 
-  return myDict[k] == self:countPrimes()
+	return myDict[k] == self:countPrimes()
 end
 
 function PrimeSieve:getBit(index)
 	if index % 2 == 0 then
 		return false
 	end
-  return self.bitArray[floor(index / 2)]
+	
+	return self.bitArray[floor(index / 2)]
 end
 
 function PrimeSieve:clearBit(index)
@@ -58,7 +61,8 @@ function PrimeSieve:clearBit(index)
 		print("You are setting even bits, which is sub-optimal")
 		return
 	end
-  self.bitArray[floor(index / 2)] = false
+	
+	self.bitArray[floor(index / 2)] = false
 end
 
 -- primeSieve
@@ -67,25 +71,24 @@ end
 
 function PrimeSieve:runSieve()
 	local factor = 3
-  local q = floor(sqrt(self.sieveSize) + 0.5)
-  local getBit, clearBit = PrimeSieve.getBit, PrimeSieve.clearBit
-
+	local q = floor(sqrt(self.sieveSize) + 0.5)
+	local getBit, clearBit = PrimeSieve.getBit, PrimeSieve.clearBit
+	
 	while factor < q do
-
-    for num = factor, self.sieveSize do
-      if getBit(self, num) then
-        factor = num
-        break
-      end
-    end
-
+		for num = factor, self.sieveSize do
+			if getBit(self, num) then
+				factor = num
+				break
+			end
+		end
+		
 		-- If marking factor 3, you wouldn't mark 6 (it's a mult of 2) so start with the 3rd instance of this factor's multiple.
 		-- We can then step by factor * 2 because every second one is going to be even by definition
 		
 		-- rbergen: changed start from factor * 3 to factor * factor
-    for num = factor * factor, self.sieveSize - 1, factor * 2 do
-      clearBit(self, num)
-    end
+		for num = factor * factor, self.sieveSize - 1, factor * 2 do
+			clearBit(self, num)
+		end
 
 		factor = factor + 2
 	end
@@ -94,25 +97,29 @@ end
 function PrimeSieve:printResults(showResults, duration, passes)
 	local s = ""
 
-	if showResults then s = s .. "2, \n" end
+	if showResults then
+		s = s .. "2, \n"
+	end
 
 	local count = 0
 	for _, value in pairs(self.bitArray) do
-		if value then count = count + 1 end
+		if value then
+			count = count + 1
+		end
 	end
 
 	if showResults then s = s .. "\n" end
+
 	s = s .."Passes: " .. passes .. 
 		", Time: " .. duration .. 
 		", Avg: " .. (duration / passes) .. 
-    ", Limit: " .. self.sieveSize .. 
+    	", Limit: " .. self.sieveSize .. 
 		", Count: " .. count .. 
-    ", Valid: " .. tostring(self:validateResults()) 
-
+    	", Valid: " .. tostring(self:validateResults())
 	-- rbergen: added drag-race output format
-  s = s .. "\n\nlua;" .. passes .. ";" .. duration .. ";1;algorithm=base,faithful=yes,bits=64\n"
-
-  print(s)
+	s = s .. "\n\nlua;" .. passes .. ";" .. duration .. ";1;algorithm=base,faithful=yes,bits=64\n"
+	
+	print(s)
 end
 
 local tStart = os.time()

@@ -14,9 +14,8 @@ return function(ARENA, TIME, CACHE)
     local begin = clock()
     local iter = 0
 
-    while (clock()-begin) <= TIME do
-
-                local increment_value = ffi.new(_i32_array, PRIME_LEN)
+    while (clock() - begin) <= TIME do
+        local increment_value = ffi.new(_i32_array, PRIME_LEN)
         local last_value = ffi.new(_i32_array, PRIME_LEN)
         local next_free = 0
 
@@ -30,11 +29,9 @@ return function(ARENA, TIME, CACHE)
                 local k2 = k*2
                 
                 for x = (k*k), PRIME_LEN, k2 do
-
                     local index = rshift( x , 1)
 
                     ARENA[ index ] = 1
-
                 end
             end
         end
@@ -63,38 +60,34 @@ return function(ARENA, TIME, CACHE)
                 local v = increment
                 local last = 0
                 for x = value, finish, increment*32 do
-
                     local xi = rshift( x , 1)
-
                     
-		ARENA[ xi ] = 1;
-		ARENA[ xi + v ] = 1;
-		ARENA[ xi + v + v ] = 1;
-		ARENA[ xi + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
-		ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi ] = 1;
+                    ARENA[ xi + v ] = 1;
+                    ARENA[ xi + v + v ] = 1;
+                    ARENA[ xi + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
+                    ARENA[ xi + v + v + v + v + v + v + v + v + v + v + v + v + v + v + v ] = 1;
 
                     last = x
-
                 end
-                last_value[factor] = last --math.max(value,last)
 
+                last_value[factor] = last --math.max(value,last)
             end
         end
         
-    
 
         iter = iter + 1
     end -->loop
-    return iter, clock()-begin
+    return iter, clock() - begin
 end
